@@ -1,0 +1,11 @@
+{
+  "name": "digitaler-pionier/data-transfer",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Tobias Oberrauch",
+      "email": "tobias.oberrauch@tob.ag"
+    }
+  ],
+  "require": {}
+}
