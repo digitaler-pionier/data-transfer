@@ -1,5 +1,5 @@
 {
-  "name": "digitaler-pionier/data-transfer",
+  "name": "tobiasoberrauch/data-transfer",
   "license": "proprietary",
   "authors": [
     {
@@ -7,5 +7,14 @@
       "email": "tobias.oberrauch@tob.ag"
     }
   ],
-  "require": {}
+  "require": {
+    "symfony/serializer": "^3.3",
+    "symfony/property-access": "^3.3",
+    "doctrine/orm": "^2.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Tob\\DataTransfer\\": "src"
+    }
+  }
 }
