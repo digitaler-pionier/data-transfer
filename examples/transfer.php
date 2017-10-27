@@ -3,11 +3,13 @@
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Tools\Setup;
 use Tob\DataTransfer\Entity\VeranstaltungReferent;
-use Tob\DataTransfer\Reader\CsvReader;
+use Tob\DataTransfer\Resource\CsvResource;
+use Tob\DataTransfer\Resource\DoctrineResource;
 use Tob\DataTransfer\Service\DataTransferService;
-use Tob\DataTransfer\Writer\DoctrineWriter;
 
 include_once __DIR__ . '/../vendor/autoload.php';
+
+$csvResource = new CsvResource(__DIR__ . '/../data/OS_Referent.csv', 'Kennummer');
 
 $connection = [
     'driver' => 'sqlsrv',
@@ -22,8 +24,7 @@ $paths = [
 $config = Setup::createAnnotationMetadataConfiguration($paths, true);
 $entityManager = EntityManager::create($connection, $config);
 
-$csvReader = new CsvReader();
-$consoleWriter = new DoctrineWriter($entityManager);
+$doctrineResource = new DoctrineResource($entityManager, VeranstaltungReferent::class);
 
-$dataTransferService = new DataTransferService($csvReader, $consoleWriter);
-$dataTransferService->transfer(__DIR__ . '/../data/OS_Referent.csv', VeranstaltungReferent::class);
+$dataTransferService = new DataTransferService($csvResource, $doctrineResource);
+$dataTransferService->transfer();

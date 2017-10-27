@@ -2,8 +2,7 @@
 
 namespace Tob\DataTransfer\Service;
 
-use Tob\DataTransfer\Reader\ReaderInterface;
-use Tob\DataTransfer\Writer\WriterInterface;
+use Tob\DataTransfer\Resource\ResourceInterface;
 
 /**
  * Class DataTransferService
@@ -18,33 +17,32 @@ use Tob\DataTransfer\Writer\WriterInterface;
  */
 class DataTransferService
 {
-    /** @var ReaderInterface */
+    /** @var ResourceInterface */
     protected $reader;
-    /** @var WriterInterface */
+    /** @var ResourceInterface */
     protected $writer;
 
     /**
      * DataTransferService constructor.
      *
-     * @param ReaderInterface $reader
-     * @param WriterInterface $writer
+     * @param ResourceInterface $reader
+     * @param ResourceInterface $writer
      */
-    public function __construct(ReaderInterface $reader, WriterInterface $writer)
+    public function __construct(ResourceInterface $reader, ResourceInterface $writer)
     {
         $this->reader = $reader;
         $this->writer = $writer;
     }
 
     /**
-     * @param string $sourceResource
-     * @param string $targetResource
-     *
      * @return void
      */
-    public function transfer(string $sourceResource, string $targetResource)
+    public function transfer()
     {
-        $messages = $this->reader->read($sourceResource);
+        $items = $this->reader->findAll();
 
-        $this->writer->write($targetResource, $messages);
+        foreach ($items as $item) {
+            $this->writer->create($item);
+        }
     }
 }
