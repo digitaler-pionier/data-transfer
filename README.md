@@ -1,5 +1,5 @@
-# Data Transfer
-It simply transfers data form a to b
+# Data Bot
+This friendly bot will help you to transfer and transform data form a to b
 
 # Examples
 - From Word to WordPress
