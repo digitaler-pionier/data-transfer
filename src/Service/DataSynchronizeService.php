@@ -82,6 +82,14 @@ class DataSynchronizeService
      */
     public function extractIdentifierValue(array $message)
     {
-        return $message[$this->primaryKey];
+        if (array_key_exists($this->primaryKey, $message)) {
+
+            return $message[$this->primaryKey];
+        }
+
+        if (array_key_exists(strtolower($this->primaryKey), $message)) {
+
+            return $message[strtolower($this->primaryKey)];
+        }
     }
 }

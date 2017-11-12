@@ -60,7 +60,7 @@ class VeranstaltungReferent implements JsonSerializable
     /**
      * @var integer
      *
-     * @ORM\Column(name="VERBAND", type="integer", nullable=false)
+     * @ORM\Column(name="VERBAND", type="integer", nullable=true)
      */
     private $verband;
 
@@ -69,7 +69,7 @@ class VeranstaltungReferent implements JsonSerializable
      *
      * @ORM\Column(name="KENNNUMMER", type="string", nullable=true)
      */
-    private $kennnummer;
+    private $kennummer;
 
     /**
      * @var boolean
@@ -99,7 +99,7 @@ class VeranstaltungReferent implements JsonSerializable
     /**
      * @return string
      */
-    public function getBerufsbezeichnung() : string
+    public function getBerufsbezeichnung() : ?string
     {
         return $this->berufsbezeichnung;
     }
@@ -153,7 +153,7 @@ class VeranstaltungReferent implements JsonSerializable
     /**
      * @return string
      */
-    public function getArbeitsstaette() : string
+    public function getArbeitsstaette() : ?string
     {
         return $this->arbeitsstaette;
     }
@@ -189,7 +189,7 @@ class VeranstaltungReferent implements JsonSerializable
     /**
      * @return int
      */
-    public function getVerband() : int
+    public function getVerband() : ?int
     {
         return $this->verband;
     }
@@ -207,19 +207,19 @@ class VeranstaltungReferent implements JsonSerializable
     /**
      * @return string
      */
-    public function getKennnummer() : string
+    public function getKennummer() : string
     {
-        return $this->kennnummer;
+        return $this->kennummer;
     }
 
     /**
-     * @param string $kennnummer
+     * @param string $kennummer
      *
      * @return void
      */
-    public function setKennummer(string $kennnummer)
+    public function setKennummer(string $kennummer)
     {
-        $this->kennnummer = $kennnummer;
+        $this->kennummer = $kennummer;
     }
 
     /**
@@ -258,7 +258,7 @@ class VeranstaltungReferent implements JsonSerializable
             'arbeitsstaette'    => $this->getArbeitsstaette(),
             'berufsbezeichnung' => $this->getBerufsbezeichnung(),
             'bild'              => $this->getBild(),
-            'kennnummer'        => $this->getKennnummer(),
+            'kennummer'         => $this->getKennummer(),
         ];
 
         $data = array_map(

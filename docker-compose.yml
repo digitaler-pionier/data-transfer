@@ -1,6 +1,21 @@
 version: '3.0'
 
 services:
+  php:
+    image: reynier3mil/centos-php-fpm-msphpsql
+    ports:
+     - "8081:80"
+    volumes:
+     - .:/var/www/html
+    links:
+     - mssql
+    networks:
+      default:
+        aliases:
+          - administration.seminarverwaltung.dev
+    environment:
+      - PHP_IDE_CONFIG="serverName=administration.seminarverwaltung.dev"
+
   mssql:
     image: microsoft/mssql-server-linux
     environment:

@@ -38,7 +38,9 @@ class PageResource implements ResourceInterface
      */
     public function find($id) : array
     {
-        // TODO: Implement find() method.
+        $response = $this->client->get('wp/v2/pages/' . $id);
+
+        return \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
     }
 
     /**
@@ -46,7 +48,9 @@ class PageResource implements ResourceInterface
      */
     public function findAll() : array
     {
-        // TODO: Implement findAll() method.
+        $response = $this->client->get('wp/v2/pages');
+
+        return \GuzzleHttp\json_decode($response->getBody()->getContents(), true);
     }
 
     /**

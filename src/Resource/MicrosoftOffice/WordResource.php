@@ -9,7 +9,7 @@ use PhpOffice\PhpWord\PhpWord;
  * Class WordResource
  *
  * PHP Version 7
- * z
+ *
  * @category  PHP
  * @package   Tob\DataTransfer\Resource\MicrosoftOffice
  * @author    Simplicity Trade GmbH <development@simplicity.ag>

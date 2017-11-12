@@ -59,6 +59,7 @@ class DoctrineResource implements ResourceInterface
 
     /**
      * @return array
+     *
      * @throws \RuntimeException
      */
     public function findAll() : array
@@ -70,6 +71,9 @@ class DoctrineResource implements ResourceInterface
      * @param array $data
      *
      * @return array
+     *
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMInvalidArgumentException
      * @throws \Symfony\Component\Serializer\Exception\UnexpectedValueException
      * @throws \Symfony\Component\Serializer\Exception\RuntimeException
      * @throws \Symfony\Component\Serializer\Exception\LogicException
@@ -79,12 +83,12 @@ class DoctrineResource implements ResourceInterface
      */
     public function create(array $data) : array
     {
-        $normalizers = [new ObjectNormalizer()];
-        $serializer = new Serializer($normalizers);
-
-        $entity = $serializer->denormalize($data, $this->entityName);
+        $entity = $this->createEntity($data);
 
         $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+
+        return $data;
     }
 
     /**
@@ -92,20 +96,43 @@ class DoctrineResource implements ResourceInterface
      * @param array $identifier
      *
      * @return array
+     *
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\ORMInvalidArgumentException
+     * @throws \Symfony\Component\Serializer\Exception\UnexpectedValueException
+     * @throws \Symfony\Component\Serializer\Exception\RuntimeException
+     * @throws \Symfony\Component\Serializer\Exception\LogicException
+     * @throws \Symfony\Component\Serializer\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\Serializer\Exception\ExtraAttributesException
+     * @throws \Symfony\Component\Serializer\Exception\BadMethodCallException
      */
     public function update(array $data, array $identifier) : array
     {
-        // TODO: Implement update() method.
+        $entity = $this->createEntity($data);
+
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+
+        return $data;
     }
 
     /**
      * @param array $identifier
      *
      * @return bool
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws \Doctrine\ORM\ORMInvalidArgumentException
+     * @throws \Doctrine\ORM\ORMException
      */
     public function delete(array $identifier) : bool
     {
-        // TODO: Implement delete() method.
+        $entity = $this->entityManager->find($this->entityName, $identifier);
+
+        if ($entity) {
+            $this->entityManager->remove($entity);
+            $this->entityManager->flush();
+        }
     }
 
     /**
@@ -136,5 +163,25 @@ class DoctrineResource implements ResourceInterface
         }
 
         return get_object_vars($entity);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return JsonSerializable
+     *
+     * @throws \Symfony\Component\Serializer\Exception\UnexpectedValueException
+     * @throws \Symfony\Component\Serializer\Exception\RuntimeException
+     * @throws \Symfony\Component\Serializer\Exception\LogicException
+     * @throws \Symfony\Component\Serializer\Exception\InvalidArgumentException
+     * @throws \Symfony\Component\Serializer\Exception\ExtraAttributesException
+     * @throws \Symfony\Component\Serializer\Exception\BadMethodCallException
+     */
+    protected function createEntity(array $data) : JsonSerializable
+    {
+        $normalizers = [new ObjectNormalizer()];
+        $serializer = new Serializer($normalizers);
+
+        return $serializer->denormalize($data, $this->entityName);
     }
 }
